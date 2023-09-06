@@ -4,7 +4,7 @@ require_relative '../models/trip'
 require_relative '../services/fare_service'
 require_relative '../services/trip_service'
 
-card = Card.new(3.0)
+card = Card.new(30.0)
 
 holborn = Station.new('Holborn', [1])
 earls_court = Station.new('Earl’s Court', [1, 2])
