@@ -1,5 +1,5 @@
 class Card
-  attr_accessor :balance
+  attr_accessor :balance, :ongoing_trip
 
   def initialize(balance)
     @balance = balance
