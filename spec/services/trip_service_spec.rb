@@ -14,16 +14,18 @@ describe TripService do
 
     context 'when card has enough balance to do the trip' do
       context 'when the trip is a tube trip' do
-        it 'charges the maximum fare (3.20) and updates card balance' do
-          expect { subject }.to change { card.balance }.from(30.0).to(26.8)
+        it 'charges the maximum fare (THREE_ZONES fare) and updates card balance' do
+          expect { subject }
+            .to change { card.balance }.from(30.0).to(30.0 - FareService::THREE_ZONES)
         end
       end
 
       context 'when the trip is a bus trip' do
         let(:type) { 'Bus' }
 
-        it 'charges the bus fare (1.80) and updates card balance' do
-          expect { subject }.to change { card.balance }.from(30.0).to(28.2)
+        it 'charges the bus fare (BUS_JOURNEY fare) and updates card balance' do
+          expect { subject }
+            .to change { card.balance }.from(30.0).to(30.0 - FareService::BUS_JOURNEY)
         end
       end
 
@@ -50,8 +52,8 @@ describe TripService do
     subject { TripService.new.end_trip_at(end_station, trip, card, swipe_out_card:) }
 
     before do
-      trip.fare = 3.20
-      card.balance = 26.8
+      trip.fare = FareService::THREE_ZONES
+      card.balance = card.balance - trip.fare
     end
 
     it 'updates trip end station' do
@@ -62,8 +64,10 @@ describe TripService do
       let(:swipe_out_card) { true }
 
       it 'calculates trip fare and updates card balance' do
-        # Trip fare for this example is 2.50 (Anywhere in Zone 1)
-        expect { subject }.to change { card.balance }.from(26.8).to(27.5)
+        # Trip fare for this example is "Anywhere in Zone 1"
+        expect { subject }
+          .to change { card.balance }.from(30.0 - FareService::THREE_ZONES)
+                                     .to(30.0 - FareService::ANYWHERE_IN_ZONE_1)
       end
     end
 
@@ -79,8 +83,8 @@ describe TripService do
       subject { TripService.new.end_trip_at(end_station, trip, card) }
 
       before do
-        trip.fare = 1.80
-        card.balance = 28.2
+        trip.fare = FareService::BUS_JOURNEY
+        card.balance = card.balance - trip.fare
       end
 
       it 'does not calculate trip fare or update card balance' do

@@ -12,16 +12,16 @@ describe FareService do
     subject { FareService.new.initial_max_fare(trip) }
 
     context 'when trip is a tube trip' do
-      it 'returns 3.20' do
-        expect(subject).to eq(3.20)
+      it 'returns initial fare as THREE_ZONES fare' do
+        expect(subject).to eq(FareService::THREE_ZONES)
       end
     end
 
     context 'when trip is a bus trip' do
       let(:type) { 'Bus' }
 
-      it 'returns 1.80' do
-        expect(subject).to eq(1.80)
+      it 'returns initial fare as BUS_JOURNEY' do
+        expect(subject).to eq(FareService::BUS_JOURNEY)
       end
     end
   end
@@ -30,8 +30,8 @@ describe FareService do
     subject { FareService.new.calculate_fare(start_station.zones, end_station.zones) }
 
     context 'when trip is anywhere in zone 1' do
-      it 'returns 2.50' do
-        expect(subject).to eq(2.50)
+      it 'returns ANYWHERE_IN_ZONE_1 fare' do
+        expect(subject).to eq(FareService::ANYWHERE_IN_ZONE_1)
       end
     end
 
@@ -39,8 +39,8 @@ describe FareService do
       let(:start_station) { Station.new('Chelsea', [2]) }
       let(:end_station)   { Station.new('Earl’s Court', [2]) }
 
-      it 'returns 2.00' do
-        expect(subject).to eq(2.00)
+      it 'returns ONE_ZONE_EXCLUDING_ZONE_1 fare' do
+        expect(subject).to eq(FareService::ONE_ZONE_EXCLUDING_ZONE_1)
       end
     end
 
@@ -48,8 +48,8 @@ describe FareService do
       let(:start_station) { Station.new('Holborn', [1]) }
       let(:end_station)   { Station.new('Wimbledon', [2]) }
 
-      it 'returns 3.00' do
-        expect(subject).to eq(3.00)
+      it 'returns TWO_ZONES_INCLUDING_ZONE_1 fare' do
+        expect(subject).to eq(FareService::TWO_ZONES_INCLUDING_ZONE_1)
       end
     end
 
@@ -57,8 +57,8 @@ describe FareService do
       let(:start_station) { Station.new('Hammersmith', [2]) }
       let(:end_station)   { Station.new('Wimbledon', [3]) }
 
-      it 'returns 2.25' do
-        expect(subject).to eq(2.25)
+      it 'returns TWO_ZONES_EXCLUDING_ZONE_1 fare' do
+        expect(subject).to eq(FareService::TWO_ZONES_EXCLUDING_ZONE_1)
       end
     end
 
@@ -66,16 +66,16 @@ describe FareService do
       let(:start_station) { Station.new('Hammersmith', [1]) }
       let(:end_station)   { Station.new('Wimbledon', [3]) }
 
-      it 'returns 3.20' do
-        expect(subject).to eq(3.20)
+      it 'returns THREE_ZONES fare' do
+        expect(subject).to eq(FareService::THREE_ZONES)
       end
     end
 
     context 'when end station has more than one zone' do
       let(:end_station) { Station.new('Earl’s Court', [1, 2, 3]) }
 
-      it 'is considered as a trip anywhere in zone 1 and returns 2.50' do
-        expect(subject).to eq(2.50)
+      it 'is considered as a trip anywhere in zone 1 and returns ANYWHERE_IN_ZONE_1 fare' do
+        expect(subject).to eq(FareService::ANYWHERE_IN_ZONE_1)
       end
     end
 
@@ -83,8 +83,8 @@ describe FareService do
       let(:start_station) { Station.new('Wimbledon', [3]) }
       let(:end_station)   { Station.new('Holborn', [1]) }
 
-      it 'returns 3.20 as a 3-zone trip regardless the order of start and end station' do
-        expect(subject).to eq(3.20)
+      it 'returns THREE_ZONES fare regardless the order of start and end station' do
+        expect(subject).to eq(FareService::THREE_ZONES)
       end
     end
   end

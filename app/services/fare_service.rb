@@ -1,18 +1,25 @@
 class FareService
+  ANYWHERE_IN_ZONE_1 = 2.50
+  ONE_ZONE_EXCLUDING_ZONE_1 = 2.00
+  TWO_ZONES_INCLUDING_ZONE_1 = 3.00
+  TWO_ZONES_EXCLUDING_ZONE_1 = 2.25
+  THREE_ZONES = 3.20
+  BUS_JOURNEY = 1.80
+
   def initial_max_fare(trip)
-    trip.type == 'Bus' ? 1.80 : 3.20
+    trip.type == 'Bus' ? BUS_JOURNEY : THREE_ZONES
   end
 
   def calculate_fare(start_zones, end_zones)
     intersection = start_zones & end_zones
     if intersection.any? # This is a 1-zone fare
-      intersection.include?(1) ? 2.50 : 2.00
+      intersection.include?(1) ? ANYWHERE_IN_ZONE_1 : ONE_ZONE_EXCLUDING_ZONE_1
     else
       zones = start_zones + end_zones
       if consecutive_zones?(zones) # This is a 2-zone fare
-        zones.include?(1) ? 3.00 : 2.25
+        zones.include?(1) ? TWO_ZONES_INCLUDING_ZONE_1 : TWO_ZONES_EXCLUDING_ZONE_1
       else # This is a 3-zone fare
-        3.20
+        THREE_ZONES
       end
     end
   end
@@ -21,14 +28,6 @@ class FareService
 
   def consecutive_zones?(zones)
     sorted_zones = zones.sort
-    expected_zone = sorted_zones.first
-
-    sorted_zones.each do |zone|
-      return false if zone != expected_zone
-
-      expected_zone += 1
-    end
-
-    true
+    sorted_zones[0] + 1 == sorted_zones[1]
   end
 end
