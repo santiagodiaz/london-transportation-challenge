@@ -17,7 +17,7 @@ class FareService
       intersection.include?(1) ? 2.50 : 2.00
     else
       zones = start_zones + end_zones
-      if consecutive_integers?(zones) # This is a 2-zone fare
+      if consecutive_zones?(zones) # This is a 2-zone fare
         zones.include?(1) ? 3.00 : 2.25
       else # This is a 3-zone fare
         3.20
@@ -25,7 +25,7 @@ class FareService
     end
   end
 
-  def consecutive_integers?(zones)
+  def consecutive_zones?(zones)
     sorted_zones = zones.sort
     expected_zone = sorted_zones.first
 
