@@ -53,9 +53,27 @@ describe FareService do
       end
     end
 
+    context 'when trip is a 2-zone trip including Zone 1 and start station contains more than 1 zone' do
+      let(:start_station) { Station.new('Earl’s Court', [2, 3]) }
+      let(:end_station) { Station.new('Holborn', [1]) }
+
+      it 'returns TWO_ZONES_INCLUDING_ZONE_1 fare' do
+        expect(subject).to eq(FareService::TWO_ZONES_INCLUDING_ZONE_1)
+      end
+    end
+
     context 'when trip is a 2-zone trip excluding Zone 1' do
       let(:start_station) { Station.new('Hammersmith', [2]) }
       let(:end_station)   { Station.new('Wimbledon', [3]) }
+
+      it 'returns TWO_ZONES_EXCLUDING_ZONE_1 fare' do
+        expect(subject).to eq(FareService::TWO_ZONES_EXCLUDING_ZONE_1)
+      end
+    end
+
+    context 'when trip is a 2-zone trip excluding Zone 1 and end station contains more than 1 zone' do
+      let(:start_station) { Station.new('Wimbledon', [3]) }
+      let(:end_station)   { Station.new('Earl’s Court', [1, 2]) }
 
       it 'returns TWO_ZONES_EXCLUDING_ZONE_1 fare' do
         expect(subject).to eq(FareService::TWO_ZONES_EXCLUDING_ZONE_1)
