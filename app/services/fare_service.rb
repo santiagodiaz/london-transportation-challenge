@@ -1,17 +1,9 @@
 class FareService
-  def calculate_fare(trip)
-    if trip.type == 'Bus'
-      1.80
-    elsif trip.swipe_out_card
-      calculate_fare_with_zones(trip.start_station.zones, trip.end_station.zones)
-    else
-      3.20
-    end
+  def initial_max_fare(trip)
+    trip.type == 'Bus' ? 1.80 : 3.20
   end
 
-  private
-
-  def calculate_fare_with_zones(start_zones, end_zones)
+  def calculate_fare(start_zones, end_zones)
     intersection = start_zones & end_zones
     if intersection.any? # This is a 1-zone fare
       intersection.include?(1) ? 2.50 : 2.00
@@ -24,6 +16,8 @@ class FareService
       end
     end
   end
+
+  private
 
   def consecutive_zones?(zones)
     sorted_zones = zones.sort

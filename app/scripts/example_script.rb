@@ -12,7 +12,21 @@ chelsea = Station.new('Chelsea', [1])
 wimbledon = Station.new('Wimbledon', [3])
 hammersmith = Station.new('Hammersmith', [2])
 
-# Create Trips with a start station, end station, type and decision to swipe out or not at exit station
-TripService.new.create_trip(holborn, earls_court, 'Tube', card, true)
-TripService.new.create_trip(earls_court, chelsea, 'Bus', card, true)
-TripService.new.create_trip(chelsea, wimbledon, 'Tube', card, true)
+# Start a trip with a start station and type
+# Then end the trip at the end station, indicating if the card was swiped out or not
+# Notes:
+# - If the card does not have enough balance to start the trip, then we show an error message
+# - If the user does not swipe out at the end station, then we show an informative message
+
+begin
+  first_trip = TripService.new.start_trip_at(holborn, 'Tube', card)
+  TripService.new.end_trip_at(earls_court, first_trip, card, swipe_out_card: true)
+
+  second_trip = TripService.new.start_trip_at(earls_court, 'Bus', card)
+  TripService.new.end_trip_at(chelsea, second_trip, card)
+
+  third_trip = TripService.new.start_trip_at(chelsea, 'Tube', card)
+  TripService.new.end_trip_at(wimbledon, third_trip, card, swipe_out_card: true)
+rescue RuntimeError => e
+  puts e.message
+end

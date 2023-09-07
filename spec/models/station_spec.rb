@@ -2,13 +2,13 @@ require_relative '../../app/models/station'
 
 describe Station do
   describe '#initialize' do
-    let(:station_name) { 'Holborn' }
-    let(:zones) { [1, 2] }
+    let(:station_name)  { 'Holborn' }
+    let(:zones)         { [1, 2] }
 
     subject { Station.new(station_name, zones) }
 
     context 'when stations name and zones are valid' do
-      it 'initializes with a valid balance' do
+      it 'initializes with a valid name and zones' do
         expect { subject }.not_to raise_error
       end
     end
