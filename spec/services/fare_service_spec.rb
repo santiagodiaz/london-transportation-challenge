@@ -1,5 +1,3 @@
-require_relative '../../app/models/station'
-require_relative '../../app/models/trip'
 require_relative '../../app/services/fare_service'
 
 describe FareService do

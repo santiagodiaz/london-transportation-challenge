@@ -1,5 +1,4 @@
 require_relative '../../app/models/trip'
-require_relative '../../app/models/station'
 
 describe Trip do
   describe '#initialize' do

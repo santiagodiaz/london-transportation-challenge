@@ -1,3 +1,6 @@
+require_relative '../models/trip'
+require_relative '../services/fare_service'
+
 class TripService
   class << self
     def start_trip_at(start_station, type, card)

@@ -1,7 +1,5 @@
 require_relative '../models/card'
 require_relative '../models/station'
-require_relative '../models/trip'
-require_relative '../services/fare_service'
 require_relative '../services/trip_service'
 
 def execute

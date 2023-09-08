@@ -1,7 +1,3 @@
-require_relative '../../app/models/card'
-require_relative '../../app/models/station'
-require_relative '../../app/models/trip'
-require_relative '../../app/services/fare_service'
 require_relative '../../app/services/trip_service'
 
 describe TripService do
