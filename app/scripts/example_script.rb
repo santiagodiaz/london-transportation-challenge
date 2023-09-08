@@ -22,8 +22,8 @@ def execute
   begin
     first_trip = TripService.new.start_trip_at(holborn, 'Tube', card)
     log_start_output(first_trip, card)
-    TripService.new.end_trip_at(earls_court, first_trip, card)
-    log_end_output(first_trip, card)
+    TripService.new.end_trip_at(earls_court, first_trip, card, swipe_out_card: true)
+    log_end_output(first_trip, card, swipe_out_card: true)
 
     second_trip = TripService.new.start_trip_at(earls_court, 'Bus', card)
     log_start_output(second_trip, card)
@@ -32,21 +32,22 @@ def execute
 
     third_trip = TripService.new.start_trip_at(chelsea, 'Tube', card)
     log_start_output(third_trip, card)
-    TripService.new.end_trip_at(wimbledon, third_trip, card)
-    log_end_output(third_trip, card)
+    TripService.new.end_trip_at(wimbledon, third_trip, card, swipe_out_card: true)
+    log_end_output(third_trip, card, swipe_out_card: true)
   rescue RuntimeError => e
     puts e.message
   end
 end
 
 def log_start_output(trip, card)
-  puts "Starting new trip at #{trip.start_station.name}"
+  puts "Starting trip at #{trip.start_station.name}"
   puts "Trip type: #{trip.type}, the card is charged the maximum fare: #{format('%.2f', trip.fare)}"
   puts "New card balance: #{format('%.2f', card.balance)} \n\n"
 end
 
-def log_end_output(trip, card)
+def log_end_output(trip, card, swipe_out_card: false)
   puts "Ending trip from #{trip.start_station.name} to #{trip.end_station.name}"
+  puts 'The user decided not to swipe out at the exit station' unless swipe_out_card || trip.type == 'Bus'
   puts "Trip type: #{trip.type}, Trip fare: #{format('%.2f', trip.fare)}"
   puts "Card balance after trip: #{format('%.2f', card.balance)} \n\n\n"
 end

@@ -29,31 +29,6 @@ describe TripService do
         end
       end
 
-      context 'when the card has already started a trip' do
-        let(:trip) { Trip.new(start_station, type) }
-        let(:expected_balance) { 30.0 - FareService::THREE_ZONES - FareService::THREE_ZONES }
-
-        before do
-          card.ongoing_trip = trip
-          card.balance = 30.0 - FareService::THREE_ZONES
-        end
-
-        it 'charges the maximum fare (THREE_ZONES fare) and updates card balance' do
-          expect { subject }
-            .to change { card.balance }.from(30.0 - FareService::THREE_ZONES)
-                                       .to(expected_balance)
-        end
-
-        it 'outputs an informative message' do
-          expected_output = "The user decided not to swipe out at the exit station\n" \
-                            "Card balance: #{format('%.2f', card.balance)} \n\n"
-
-          expect { subject }
-            .to output(expected_output)
-            .to_stdout
-        end
-      end
-
       it 'returns the trip' do
         expect(subject).to be_a(Trip)
       end
@@ -72,8 +47,9 @@ describe TripService do
   describe '#end_trip_at' do
     let(:end_station)     { Station.new('Earl’s Court', [1, 2]) }
     let(:trip)            { Trip.new(start_station, type) }
+    let(:swipe_out_card)  { false }
 
-    subject { TripService.new.end_trip_at(end_station, trip, card) }
+    subject { TripService.new.end_trip_at(end_station, trip, card, swipe_out_card:) }
 
     before do
       trip.fare = FareService::THREE_ZONES
@@ -84,11 +60,21 @@ describe TripService do
       expect { subject }.to change { trip.end_station }.from(nil).to(end_station)
     end
 
-    it 'calculates trip fare and updates card balance' do
-      # Trip fare for this example is "Anywhere in Zone 1"
-      expect { subject }
-        .to change { card.balance }.from(30.0 - FareService::THREE_ZONES)
-                                   .to(30.0 - FareService::ANYWHERE_IN_ZONE_1)
+    context 'when user decided to swipe out' do
+      let(:swipe_out_card) { true }
+
+      it 'calculates trip fare and updates card balance' do
+        # Trip fare for this example is "Anywhere in Zone 1"
+        expect { subject }
+          .to change { card.balance }.from(30.0 - FareService::THREE_ZONES)
+                                     .to(30.0 - FareService::ANYWHERE_IN_ZONE_1)
+      end
+    end
+
+    context 'when user decided to not swipe out' do
+      it 'does not calculate trip fare or update card balance' do
+        expect { subject }.not_to change { card.balance }
+      end
     end
 
     context 'when trip is a bus trip' do
