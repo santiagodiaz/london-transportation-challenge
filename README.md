@@ -34,7 +34,7 @@ The total charge is `7.50` and the final card balance will be `22.50`
 ## How to Run the Tests
 To run the tests for this project using RSpec, follow these steps:
 - Open your terminal or command prompt.
-- Navigate to the project directory where the spec folder is located.
+- Navigate to the project root directory.
 - Run the tests by executing the following commands:
 
    ```shell
