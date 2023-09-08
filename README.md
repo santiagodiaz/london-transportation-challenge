@@ -33,16 +33,12 @@ The total charge is `7.50` and the final card balance will be `22.50`
 
 ## How to Run the Tests
 To run the tests for this project using RSpec, follow these steps:
-Make sure you have RSpec installed on your system. If not, you can install it with:
-
-```shell
-gem install rspec
-```
 - Open your terminal or command prompt.
 - Navigate to the project directory where the spec folder is located.
-- Run the tests by executing the following command:
+- Run the tests by executing the following commands:
 
 ```shell
+bundle install
 rspec
 ```
 This will run all the tests and display the results in the terminal.
