@@ -37,8 +37,8 @@ To run the tests for this project using RSpec, follow these steps:
 - Navigate to the project directory where the spec folder is located.
 - Run the tests by executing the following commands:
 
-```shell
-bundle install
-rspec
-```
+   ```shell
+   bundle install
+   rspec
+   ```
 This will run all the tests and display the results in the terminal.
