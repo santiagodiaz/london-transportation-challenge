@@ -20,19 +20,19 @@ def execute
   # - If the user does not swipe out at the end station, then we show an informative message
 
   begin
-    first_trip = TripService.new.start_trip_at(holborn, 'Tube', card)
+    first_trip = TripService.start_trip_at(holborn, 'Tube', card)
     log_start_output(first_trip, card)
-    TripService.new.end_trip_at(earls_court, first_trip, card, swipe_out_card: true)
+    TripService.end_trip_at(earls_court, first_trip, card, swipe_out_card: true)
     log_end_output(first_trip, card, swipe_out_card: true)
 
-    second_trip = TripService.new.start_trip_at(earls_court, 'Bus', card)
+    second_trip = TripService.start_trip_at(earls_court, 'Bus', card)
     log_start_output(second_trip, card)
-    TripService.new.end_trip_at(chelsea, second_trip, card)
+    TripService.end_trip_at(chelsea, second_trip, card)
     log_end_output(second_trip, card)
 
-    third_trip = TripService.new.start_trip_at(chelsea, 'Tube', card)
+    third_trip = TripService.start_trip_at(chelsea, 'Tube', card)
     log_start_output(third_trip, card)
-    TripService.new.end_trip_at(wimbledon, third_trip, card, swipe_out_card: true)
+    TripService.end_trip_at(wimbledon, third_trip, card, swipe_out_card: true)
     log_end_output(third_trip, card, swipe_out_card: true)
   rescue RuntimeError => e
     puts e.message

@@ -9,7 +9,7 @@ describe FareService do
   let(:trip)          { Trip.new(start_station, type) }
 
   describe '#initial_max_fare' do
-    subject { FareService.new.initial_max_fare(trip) }
+    subject { FareService.initial_max_fare(trip) }
 
     context 'when trip is a tube trip' do
       it 'returns initial fare as THREE_ZONES fare' do
@@ -27,7 +27,7 @@ describe FareService do
   end
 
   describe '#calculate_fare' do
-    subject { FareService.new.calculate_fare(start_station.zones, end_station.zones) }
+    subject { FareService.calculate_fare(start_station.zones, end_station.zones) }
 
     context 'when trip is anywhere in zone 1' do
       it 'returns ANYWHERE_IN_ZONE_1 fare' do

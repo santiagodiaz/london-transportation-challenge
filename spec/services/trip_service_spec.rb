@@ -10,7 +10,7 @@ describe TripService do
   let(:card)          { Card.new(30.0) }
 
   describe '#start_trip_at' do
-    subject { TripService.new.start_trip_at(start_station, type, card) }
+    subject { TripService.start_trip_at(start_station, type, card) }
 
     context 'when card has enough balance to do the trip' do
       context 'when the trip is a tube trip' do
@@ -49,7 +49,7 @@ describe TripService do
     let(:trip)            { Trip.new(start_station, type) }
     let(:swipe_out_card)  { false }
 
-    subject { TripService.new.end_trip_at(end_station, trip, card, swipe_out_card:) }
+    subject { TripService.end_trip_at(end_station, trip, card, swipe_out_card:) }
 
     before do
       trip.fare = FareService::THREE_ZONES
@@ -80,7 +80,7 @@ describe TripService do
     context 'when trip is a bus trip' do
       let(:type) { 'Bus' }
 
-      subject { TripService.new.end_trip_at(end_station, trip, card) }
+      subject { TripService.end_trip_at(end_station, trip, card) }
 
       before do
         trip.fare = FareService::BUS_JOURNEY
